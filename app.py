@@ -45,3 +45,8 @@ def update_graphs(selected_product):
 
     # กราฟที่ 3: Pie Chart (สัดส่วนข้อมูล)
     fig3 = px.pie(filtered_df, names='หน่วยนับ', title='สัดส่วนหน่วยวัดสินค้า')
+    
+    return fig1, fig2, fig3
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
