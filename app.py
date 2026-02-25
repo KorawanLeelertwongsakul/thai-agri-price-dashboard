@@ -36,3 +36,6 @@ app.layout = html.Div([
 def update_graphs(selected_product):
     # กรองข้อมูลตามสินค้าที่เลือก
     filtered_df = df[df['ชื่อคอลัมน์สินค้า'] == selected_product]
+    
+    # กราฟที่ 1: Line Chart (แนวโน้มราคา)
+    fig1 = px.line(filtered_df, x='คอลัมน์วันที่', y='คอลัมน์ราคา', title=f'แนวโน้มราคา: {selected_product}')
