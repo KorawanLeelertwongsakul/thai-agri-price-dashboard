@@ -26,3 +26,13 @@ app.layout = html.Div([
     dcc.Graph(id='bar-chart'),
     dcc.Graph(id='pie-chart')
 ])
+
+@app.callback(
+    [Output('line-chart', 'figure'),
+     Output('bar-chart', 'figure'),
+     Output('pie-chart', 'figure')],
+    [Input('product-dropdown', 'value')]
+)
+def update_graphs(selected_product):
+    # กรองข้อมูลตามสินค้าที่เลือก
+    filtered_df = df[df['ชื่อคอลัมน์สินค้า'] == selected_product]
