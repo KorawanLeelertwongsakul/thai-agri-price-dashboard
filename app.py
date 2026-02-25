@@ -6,8 +6,7 @@ import pandas as pd
 
 # --- ส่วนของการโหลดข้อมูล ---
 df = pd.read_csv('prices.csv', encoding='utf-8') 
-
-app = dash.Dash(__name__)
+sapp = dash.Dash(__name__)
 
 app.layout = html.Div([
     html.H1("Dashboard ราคาสินค้าเกษตรไทย", style={'textAlign': 'center', 'color': '#2c3e50'}),
@@ -53,4 +52,4 @@ def update_graphs(selected_product):
     return fig1, fig2, fig3
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+   app.run(debug=True)
