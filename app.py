@@ -5,26 +5,29 @@ import plotly.express as px
 import pandas as pd
 
 # --- ส่วนของการโหลดข้อมูล ---
-# ลองใช้ encoding='tis-620' หรือ 'utf-8' ถ้าอ่านภาษาไทยไม่ออก
 df = pd.read_csv('prices.csv', encoding='utf-8') 
 
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
-    html.H1("Dashboard ราคาสินค้าเกษตรไทย", style={'textAlign': 'center'}),
+    html.H1("Dashboard ราคาสินค้าเกษตรไทย", style={'textAlign': 'center', 'color': '#2c3e50'}),
     
     html.Div([
         html.Label("เลือกรายการสินค้า:"),
         dcc.Dropdown(
             id='product-dropdown',
-            options=[{'label': i, 'value': i} for i in df['ชื่อคอลัมน์สินค้า'].unique()], # เปลี่ยน 'ชื่อคอลัมน์สินค้า' ให้ตรงกับในไฟล์
-            value=df['ชื่อคอลัมน์สินค้า'].unique()[0] # เลือกตัวแรกเป็นค่าเริ่มต้น
+            options=[{'label': i, 'value': i} for i in df['PR_PROD_NAME'].unique()],
+            value=df['PR_PROD_NAME'].unique()[0] 
         ),
-    ], style={'width': '40%', 'margin': 'auto'}),
+    ], style={'width': '50%', 'margin': '20px auto'}),
 
-    dcc.Graph(id='line-chart'),
-    dcc.Graph(id='bar-chart'),
-    dcc.Graph(id='pie-chart')
+    html.Div([
+        dcc.Graph(id='line-chart'),
+        html.Div([
+            dcc.Graph(id='bar-chart', style={'display': 'inline-block', 'width': '50%'}),
+            dcc.Graph(id='pie-chart', style={'display': 'inline-block', 'width': '50%'})
+        ])
+    ])
 ])
 
 @app.callback(
@@ -34,18 +37,19 @@ app.layout = html.Div([
     [Input('product-dropdown', 'value')]
 )
 def update_graphs(selected_product):
-    # กรองข้อมูลตามสินค้าที่เลือก
-    filtered_df = df[df['ชื่อคอลัมน์สินค้า'] == selected_product]
-    
-    # กราฟที่ 1: Line Chart (แนวโน้มราคา)
-    fig1 = px.line(filtered_df, x='คอลัมน์วันที่', y='คอลัมน์ราคา', title=f'แนวโน้มราคา: {selected_product}')
+    filtered_df = df[df['PR_PROD_NAME'] == selected_product]
 
-    # กราฟที่ 2: Bar Chart (เปรียบเทียบราคาตามแหล่งข้อมูล/จังหวัด)
-    fig2 = px.bar(filtered_df, x='ชื่อจังหวัด', y='คอลัมน์ราคา', color='ชื่อจังหวัด', title='ราคาแยกตามพื้นที่')
+    # กราฟที่ 1: Line Chart แนวโน้มราคาตามวันที่
+    fig1 = px.line(filtered_df, x='PRICE_DATE', y='PRICE_DAY', 
+                  title=f'แนวโน้มราคา: {selected_product}', markers=True)
 
-    # กราฟที่ 3: Pie Chart (สัดส่วนข้อมูล)
-    fig3 = px.pie(filtered_df, names='หน่วยนับ', title='สัดส่วนหน่วยวัดสินค้า')
-    
+    # กราฟที่ 2: Bar Chart ราคาแยกตามตลาด
+    fig2 = px.bar(filtered_df, x='MARKET_NAME', y='PRICE_DAY', color='MARKET_NAME',
+                 title='เปรียบเทียบราคาแต่ละตลาด')
+
+    # กราฟที่ 3: Pie Chart สัดส่วนการบันทึกข้อมูลแต่ละตลาด
+    fig3 = px.pie(filtered_df, names='MARKET_NAME', title='สัดส่วนแหล่งข้อมูล')
+
     return fig1, fig2, fig3
 
 if __name__ == '__main__':
