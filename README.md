@@ -30,3 +30,22 @@ pip install -r requirements.txt
 python app.py
 
 5. เข้าชม Dashboard : เปิด Browser ไปที่ http://127.0.0.1:8050
+
+อธิบายการทำงานของโค้ด (Code Explanation)
+Data Loading: ใช้ pandas ในการอ่านไฟล์ CSV และจัดการเรื่อง Encoding (TIS-620 หรือ UTF-8) เพื่อให้แสดงผลภาษาไทยได้อย่างถูกต้อง
+
+Layout Design: ออกแบบด้วย Dash HTML Components และ Dash Core Components โดยเน้นความสะอาดตา ใช้ฟอนต์ Sarabun เพื่อความสวยงามและอ่านง่าย
+
+Interactivity (Callback):
+
+ใช้ระบบ Reactive Programming ของ Dash โดยเมื่อผู้ใช้เลือกสินค้าจาก Dropdown ระบบจะส่งค่านั้นไปกรองข้อมูลใน DataFrame
+
+ข้อมูลที่ถูกกรองจะถูกส่งไปยังฟังก์ชันสร้างกราฟ 3 ตัว เพื่ออัปเดตผลลัพธ์พร้อมกันโดยไม่ต้อง Refresh หน้าเว็บ
+
+Visualizations:
+
+Line Chart: แสดงแนวโน้มราคาตามกาลเวลา
+
+Bar Chart: เปรียบเทียบราคาในแต่ละตลาดแหล่งข้อมูล
+
+Pie Chart: แสดงสัดส่วนปริมาณข้อมูลในแต่ละตลาด
