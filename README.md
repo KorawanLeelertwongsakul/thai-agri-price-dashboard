@@ -44,9 +44,7 @@ Interactivity (Callback):
 Visualizations :
 
 Line Chart : แสดงแนวโน้มราคาตามกาลเวลา
-
 Bar Chart : เปรียบเทียบราคาในแต่ละตลาดแหล่งข้อมูล
-
 Pie Chart : แสดงสัดส่วนปริมาณข้อมูลในแต่ละตลาด
 
 
