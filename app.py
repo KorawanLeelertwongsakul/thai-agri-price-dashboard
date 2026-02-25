@@ -40,7 +40,7 @@ def update_graphs(selected_product):
 
     # กราฟที่ 1: Line Chart แนวโน้มราคาตามวันที่
     fig1 = px.line(filtered_df, x='PRICE_DATE', y='PRICE_DAY', 
-                  title=f'แนวโน้มราคา: {selected_product}', markers=True)
+                  title=f'แนวโน้มราคา: {selected_product}', markers=True, color_discrete_sequence=['blue'])
 
     # กราฟที่ 2: Bar Chart ราคาแยกตามตลาด
     fig2 = px.bar(filtered_df, x='MARKET_NAME', y='PRICE_DAY', color='MARKET_NAME',
