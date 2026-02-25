@@ -43,3 +43,5 @@ def update_graphs(selected_product):
     # กราฟที่ 2: Bar Chart (เปรียบเทียบราคาตามแหล่งข้อมูล/จังหวัด)
     fig2 = px.bar(filtered_df, x='ชื่อจังหวัด', y='คอลัมน์ราคา', color='ชื่อจังหวัด', title='ราคาแยกตามพื้นที่')
 
+    # กราฟที่ 3: Pie Chart (สัดส่วนข้อมูล)
+    fig3 = px.pie(filtered_df, names='หน่วยนับ', title='สัดส่วนหน่วยวัดสินค้า')
