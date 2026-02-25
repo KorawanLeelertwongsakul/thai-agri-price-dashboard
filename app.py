@@ -6,10 +6,10 @@ import pandas as pd
 
 # --- ส่วนของการโหลดข้อมูล ---
 df = pd.read_csv('prices.csv', encoding='utf-8') 
-sapp = dash.Dash(__name__)
+app = dash.Dash(__name__)
 
 app.layout = html.Div([
-    html.H1("Dashboard ราคาสินค้าเกษตรไทย", style={'textAlign': 'center', 'color': '#2c3e50'}),
+    html.H1("Dashboard ราคาสินค้าเกษตรไทย", style={'textAlign': 'center', 'color': '#170121'}),
     
     html.Div([
         html.Label("เลือกรายการสินค้า:"),
