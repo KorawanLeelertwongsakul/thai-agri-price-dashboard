@@ -39,3 +39,7 @@ def update_graphs(selected_product):
     
     # กราฟที่ 1: Line Chart (แนวโน้มราคา)
     fig1 = px.line(filtered_df, x='คอลัมน์วันที่', y='คอลัมน์ราคา', title=f'แนวโน้มราคา: {selected_product}')
+
+    # กราฟที่ 2: Bar Chart (เปรียบเทียบราคาตามแหล่งข้อมูล/จังหวัด)
+    fig2 = px.bar(filtered_df, x='ชื่อจังหวัด', y='คอลัมน์ราคา', color='ชื่อจังหวัด', title='ราคาแยกตามพื้นที่')
+
