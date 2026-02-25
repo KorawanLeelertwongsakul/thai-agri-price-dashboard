@@ -6,26 +6,30 @@ import pandas as pd
 
 # --- ส่วนของการโหลดข้อมูล ---
 df = pd.read_csv('prices.csv', encoding='utf-8') 
-app = dash.Dash(__name__)
+
+# นำเข้า Google Fonts
+external_stylesheets = ['https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap']
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 # --- ส่วนของการจัดวางหน้าจอ (Layout) ---
-app.layout = html.Div([ 
-    
+app.layout = html.Div([
     html.H1("Dashboard ราคาสินค้าเกษตรไทย", 
             style={
                 'textAlign': 'center', 
                 'color': '#1a5276', 
-                'fontFamily': 'Arial, sans-serif',
+                'fontFamily': 'Sarabun, sans-serif',
                 'paddingTop': '20px'
             }),
     
     html.Div([
-        html.Label("เลือกรายการสินค้า:", style={'fontFamily': 'Arial'}),
+        html.Label("เลือกรายการสินค้า:", style={'fontFamily': 'Sarabun', 'fontWeight': 'bold'}),
         dcc.Dropdown(
             id='product-dropdown',
             options=[{'label': i, 'value': i} for i in df['PR_PROD_NAME'].unique()],
             value=df['PR_PROD_NAME'].unique()[0],
-            style={'fontFamily': 'Arial'}
+            searchable=True,
+            clearable=True,
+            style={'fontFamily': 'Sarabun'}
         ),
     ], style={'width': '50%', 'margin': '20px auto'}),
 
@@ -36,7 +40,7 @@ app.layout = html.Div([
             dcc.Graph(id='pie-chart', style={'display': 'inline-block', 'width': '50%'})
         ])
     ])
-], style={'backgroundColor': '#f9f9f9', 'minHeight': '100vh', 'padding': '10px'}) 
+], style={'backgroundColor': '#f9f9f9', 'minHeight': '100vh', 'padding': '10px', 'fontFamily': 'Sarabun'})
 
 # --- ส่วนของระบบ Interactive (Callback) ---
 @app.callback(
@@ -46,26 +50,22 @@ app.layout = html.Div([
     [Input('product-dropdown', 'value')]
 )
 def update_graphs(selected_product):
-    # กรองข้อมูลตามสินค้าที่เลือก
+    if not selected_product:
+        return {}, {}, {}
+
     filtered_df = df[df['PR_PROD_NAME'] == selected_product]
 
-    # กราฟที่ 1: Line Chart 
     fig1 = px.line(filtered_df, x='PRICE_DATE', y='PRICE_DAY', 
                   title=f'แนวโน้มราคา: {selected_product}', 
-                  markers=True, 
-                  color_discrete_sequence=['blue'])
+                  markers=True, color_discrete_sequence=['blue'])
     
-    # ปรับแต่งฟอนต์ในกราฟ
-    fig1.update_layout(font_family="Arial")
-
-    # กราฟที่ 2: Bar Chart
     fig2 = px.bar(filtered_df, x='MARKET_NAME', y='PRICE_DAY', color='MARKET_NAME',
                  title='เปรียบเทียบราคาแต่ละตลาด')
-    fig2.update_layout(font_family="Arial")
 
-    # กราฟที่ 3: Pie Chart
     fig3 = px.pie(filtered_df, names='MARKET_NAME', title='สัดส่วนแหล่งข้อมูล')
-    fig3.update_layout(font_family="Arial")
+
+    for fig in [fig1, fig2, fig3]:
+        fig.update_layout(font_family="Sarabun", title_font_family="Sarabun")
 
     return fig1, fig2, fig3
 
